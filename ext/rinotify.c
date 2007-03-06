@@ -15,14 +15,14 @@ void Init_rinotify() {
 	rb_cRInotify = rb_define_class("RInotify", rb_cObject);	
 
 	// RInotify.new
-	rb_define_alloc_func (rb_cRInotify, rinotify_new);
+	rb_define_alloc_func (rb_cRInotify, rb_rinotify_new);
 
 	// RInotify.close
-	rb_define_method (rb_cRInotify, "close", rinotify_close, 0);
+	rb_define_method (rb_cRInotify, "close", rb_rinotify_close, 0);
 }
 
 
-static VALUE rinotify_new(VALUE klass) {
+static VALUE rb_rinotify_new(VALUE klass) {
 	// initialize inotify
 	int *inotify = NULL;
 	inotify = malloc(sizeof(int));
@@ -39,7 +39,7 @@ static VALUE rinotify_new(VALUE klass) {
 }
 
 
-static VALUE rinotify_close(VALUE self) {
+static VALUE rb_rinotify_close(VALUE self) {
 	int *inotify = NULL, close_return;
 	Data_Get_Struct(self, int, inotify);
 

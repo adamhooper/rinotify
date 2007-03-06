@@ -24,8 +24,9 @@ static void rinotify_declare_events(VALUE);
  *		RInotify.new => RInotify
  *
  *	Returns a new RInotify object.
+ *
  */
-static VALUE rinotify_new(VALUE);
+static VALUE rb_rinotify_new(VALUE);
 
 
 /*
@@ -34,5 +35,6 @@ static VALUE rinotify_new(VALUE);
  *		RInotify.close => nil
  *
  *	Cleans up and closes inotify.
+ *
  */
-static VALUE rinotify_close(VALUE);
+static VALUE rb_rinotify_close(VALUE);
