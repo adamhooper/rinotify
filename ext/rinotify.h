@@ -5,9 +5,6 @@ static VALUE rb_cRInotify;
 
 /* Non Ruby-implimented Prototypes */
 
-// free up the object for Ruby's GC
-static void rinotify_free(VALUE);
-
 // declare the inotify events
 static void rinotify_declare_events(VALUE);
 
@@ -23,3 +20,13 @@ static void rinotify_declare_events(VALUE);
  *	Returns a new RInotify object.
  */
 static VALUE rinotify_new(VALUE);
+
+
+/*
+ *
+ * call-seq:
+ *		RInotify.close => nil
+ *
+ *	Cleans up and closes inotify.
+ */
+static VALUE rinotify_close(VALUE);

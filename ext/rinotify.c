@@ -8,34 +8,41 @@
 void Init_rinotify() {
 	rb_cRInotify = rb_define_class("RInotify", rb_cObject);	
 
-	// "new" method
+	// RInotify.new
 	rb_define_alloc_func (rb_cRInotify, rinotify_new);
+
+	// RInotify.close
+	rb_define_method (rb_cRInotify, "close", rinotify_close, 0);
 }
 
 
 static VALUE rinotify_new(VALUE klass) {
 	// initialize inotify
-	int inotify, *inotify_ptr = NULL;
-	inotify = inotify_init();
-	inotify_ptr = &inotify;
+	int *inotify = NULL;
+	inotify = malloc(sizeof(int));
+	*inotify = inotify_init();
 
-	if (inotify < 0)
+	if (*inotify < 0)
 		rb_sys_fail("inotify_init");	
 
-	// initialize all of the bit masks
+	// initialize all of the events
 	rinotify_declare_events(klass);		
 
-	return Data_Wrap_Struct(klass, NULL, rinotify_free, inotify_ptr);
+	// make sure free is called because we malloc'd above
+	return Data_Wrap_Struct(klass, NULL, free, inotify);
 }
 
 
-static void rinotify_free(VALUE self) {
+static VALUE rinotify_close(VALUE self) {
 	int *inotify = NULL, close_return;
 	Data_Get_Struct(self, int, inotify);
 
+	// close and clean up inotify
 	close_return = close(*inotify);
 	if (close_return)
 		rb_sys_fail("close");	
+
+	return Qnil;
 }
 
 
