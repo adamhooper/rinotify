@@ -15,16 +15,17 @@ void Init_rinotify() {
 
 static VALUE rinotify_new(VALUE klass) {
 	// initialize inotify
-	int *inotify = NULL;
-	*inotify = inotify_init();
+	int inotify, *inotify_ptr = NULL;
+	inotify = inotify_init();
+	inotify_ptr = &inotify;
 
-	if (*inotify < 0)
+	if (inotify < 0)
 		rb_sys_fail("inotify_init");	
 
 	// initialize all of the bit masks
 	rinotify_declare_events(klass);		
 
-	return Data_Wrap_Struct(klass, NULL, rinotify_free, inotify);
+	return Data_Wrap_Struct(klass, NULL, rinotify_free, inotify_ptr);
 }
 
 
