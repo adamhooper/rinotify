@@ -13,6 +13,9 @@
 // extension entry point
 void Init_rinotify() {
 	rb_cRInotify = rb_define_class("RInotify", rb_cObject);	
+	
+	// initialize all of the events
+	rinotify_declare_events(rb_cRInotify);		
 
 	// RInotify.new
 	rb_define_alloc_func(rb_cRInotify, rb_rinotify_new);
@@ -36,9 +39,6 @@ static VALUE rb_rinotify_new(VALUE klass) {
 
 	if (*inotify < 0)
 		rb_sys_fail("inotify_init");	
-
-	// initialize all of the events
-	rinotify_declare_events(klass);		
 
 	// make sure free is called because we malloc'd above
 	// TODO instead of sending to free create a function to close inotfy
