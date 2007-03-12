@@ -11,7 +11,7 @@ static VALUE rb_cRInotify;
 
 /* Non Ruby-implimented Prototypes */
 
-// declare the inotify events
+// declare the inotify events as constants
 static void rinotify_declare_events(VALUE);
 
 
