@@ -5,9 +5,11 @@
  * ***************************************************/
 
 #include "ruby.h"
+#include "rubyio.h"
 #include "rinotify.h"
 
 #include <sys/inotify.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 // extension entry point
@@ -28,6 +30,12 @@ void Init_rinotify() {
 
 	// RInotify.rm_watch
 	rb_define_method(rb_cRInotify, "rm_watch", rb_rinotify_rm_watch, 1);
+
+	// RInotify.wait_for_events
+	rb_define_method(rb_cRInotify, "wait_for_events", rb_rinotify_wait_for_events, 1);
+
+	// RInotify.read_each_event
+	rb_define_method(rb_cRInotify, "read_each_event", rb_rinotify_read_each_event, 0);
 }
 
 
@@ -84,6 +92,44 @@ static VALUE rb_rinotify_rm_watch(VALUE self, VALUE watch_desc) {
 		rb_sys_fail("rm_watch");
 
 	return INT2NUM(rm_return);
+}
+
+
+static VALUE rb_rinotify_wait_for_events(VALUE self, VALUE time_value) {
+	struct timeval time;
+	fd_set rfds;
+	int select_ret, *inotify = NULL;	
+
+	Data_Get_Struct(self, int, inotify);
+
+	// set the timout value
+	time.tv_sec = NUM2INT(time_value);
+	time.tv_usec = 0;
+
+	// add inotify to the file descriptor set
+	FD_ZERO(&rfds);
+	FD_SET(*inotify, &rfds);	
+
+	select_ret = rb_thread_select(*inotify + 1, &rfds, NULL, NULL, &time);
+	
+	if (select_ret < 0)
+		rb_sys_fail("select");
+
+	// no events are available and we have timed out
+	else if (!select_ret)
+		return Qfalse;
+
+	// events are available
+	else if (FD_ISSET(*inotify, &rfds))
+		return Qtrue;
+
+	// to keep the compiler happy...
+	return Qfalse;
+}
+
+
+static VALUE rb_rinotify_read_each_event(VALUE self) {
+	return Qnil;
 }
 
 
