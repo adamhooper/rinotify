@@ -7,6 +7,7 @@
 #include "ruby.h"
 #include "rubyio.h"
 #include "rinotify.h"
+#include "rinotify_event.h"
 
 #include <sys/inotify.h>
 #include <sys/time.h>
@@ -129,6 +130,30 @@ static VALUE rb_rinotify_wait_for_events(VALUE self, VALUE time_value) {
 
 
 static VALUE rb_rinotify_read_each_event(VALUE self) {
+	struct inotify_event *event = NULL, *tmp_event = NULL;
+	int *inotify = NULL, i = 0, len;
+	char buffer[BUFFER_SIZE];
+
+	Data_Get_Struct(self, int, inotify);
+
+	// TODO: fread?
+	len = read(*inotify, buffer, BUFFER_SIZE);	
+
+	// read each event
+	while (i < len) {
+		tmp_event = (struct inotify_event *) &buffer[i];
+
+		// copy the tmp_event into our malloc'd event so that it doesn't
+		// go out of scope after we yield the object
+        event = malloc(EVENT_SIZE);
+		memmove(event, tmp_event, EVENT_SIZE); 
+
+		// construct the RInotifyEvent object
+		rb_yield(rb_rinotify_event_new(event));
+
+		i += EVENT_SIZE + event->len;
+	}
+
 	return Qnil;
 }
 

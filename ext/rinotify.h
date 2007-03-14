@@ -8,6 +8,10 @@
 #define RINOTIFY_H
 
 #include "ruby.h"
+#include <sys/inotify.h>
+
+#define EVENT_SIZE sizeof(struct inotify_event)
+#define BUFFER_SIZE 16384
 
 // RInotify class
 static VALUE rb_cRInotify;
