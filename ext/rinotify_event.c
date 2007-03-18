@@ -13,16 +13,16 @@ void Init_rinotify_event() {
 }
 
 
-static VALUE rb_rinotify_event_new(struct inotify_event *event) {
+VALUE rb_rinotify_event_new(struct inotify_event *event) {
 	return Data_Wrap_Struct(rb_cRInotifyEvent, NULL, free, event);	
 }
 
 
-static VALUE rb_rinotify_event_name(VALUE self) {
+VALUE rb_rinotify_event_name(VALUE self) {
 	struct inotify_event *event;	
-	Data_Get_Struct(self, struct intotify_event, event);
+	Data_Get_Struct(self, struct inotify_event, event);
 
-	return RSTRING(event->name)->ptr;
+	return INT2NUM(5);
 }
 
 

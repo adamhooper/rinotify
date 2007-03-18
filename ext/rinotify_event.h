@@ -11,7 +11,7 @@
 #include <sys/inotify.h>
 
 // RInotifyEvent class
-static VALUE rb_cRInotifyEvent;
+VALUE rb_cRInotifyEvent;
 
 /* Ruby Prototypes */
 
@@ -23,7 +23,7 @@ static VALUE rb_cRInotifyEvent;
  * 	Returns a new RInotifyEvent object.  This method should only be called by RInotify.read_each_event
  *
  */
-static VALUE rb_rinotify_event_new(struct inotify_event*);
+VALUE rb_rinotify_event_new(struct inotify_event*);
 
 
 /*
@@ -34,7 +34,7 @@ static VALUE rb_rinotify_event_new(struct inotify_event*);
  * Returns the name of the event.
  *
  */
-static VALUE rb_rinotify_event_name(VALUE);
+VALUE rb_rinotify_event_name(VALUE);
 
 
 #endif
