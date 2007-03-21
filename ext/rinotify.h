@@ -10,6 +10,7 @@
 #include "ruby.h"
 #include <sys/inotify.h>
 
+#define CURRENT_VERSION "0.1.0"
 #define EVENT_SIZE sizeof(struct inotify_event)
 #define BUFFER_SIZE 16384
 
@@ -34,6 +35,15 @@ static void rinotify_declare_events(VALUE);
  *
  */
 static VALUE rb_rinotify_new(VALUE);
+
+
+/*
+ *
+ * call-seq:
+ * 		RInotify.version
+ *
+ */
+static VALUE rb_rinotify_version(VALUE);
 
 
 /*

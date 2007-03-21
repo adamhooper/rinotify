@@ -22,6 +22,9 @@ void Init_rinotify() {
 
 	// RInotify.new
 	rb_define_alloc_func(rb_cRInotify, rb_rinotify_new);
+	
+	// RInotify.version
+	rb_define_method(rb_cRInotify, "version", rb_rinotify_version, 0);
 
 	// RInotify.close
 	rb_define_method(rb_cRInotify, "close", rb_rinotify_close, 0);
@@ -53,6 +56,11 @@ static VALUE rb_rinotify_new(VALUE klass) {
 	// TODO instead of sending to free create a function to close inotfy
 	// if it is still open, so we can prevent memory leaks
 	return Data_Wrap_Struct(klass, NULL, free, inotify);
+}
+
+
+static VALUE rb_rinotify_version(VALUE self) {
+	return rb_str_new2(CURRENT_VERSION);	
 }
 
 
