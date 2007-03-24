@@ -41,6 +41,15 @@ void Init_rinotify() {
 
 	// RInotify.read_each_event
 	rb_define_method(rb_cRInotify, "read_each_event", rb_rinotify_read_each_event, 0);
+
+
+	/* The following methods are implemented in rinotify_event.c */
+	
+	// RInotifyEvent.name
+	rb_define_method(rb_cRInotifyEvent, "name", rb_rinotify_event_name, 0);
+
+	// RInotifyEvent.event_sent
+	//rb_define_method(rb_cRInotifyEvent, "event_sent", rb_rinotify_event_sent, 0);
 }
 
 

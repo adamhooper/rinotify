@@ -5,7 +5,7 @@
 #include <sys/inotify.h>
 
 // class entry point
-void Init_rinotify_event() {
+void Init_rinotifyevent() {
 	rb_cRInotifyEvent = rb_define_class("RInotifyEvent", rb_cObject);
 
 	// RInotifyEvent.name
@@ -24,10 +24,19 @@ VALUE rb_rinotify_event_new(struct inotify_event *event) {
 
 
 VALUE rb_rinotify_event_name(VALUE self) {
+	VALUE name;
 	struct inotify_event *event;	
 	Data_Get_Struct(self, struct inotify_event, event);
 
-	return INT2NUM(5);
+	// if watching for events in a directory inotify will tell us the name
+	if (event->len) {
+		name = rb_str_new2(event->name);	
+	} else {
+	// if watching a single file we need to retrieve it from the initial watch
+		name = rb_str_new2("something");
+	}
+
+	return INT2NUM(event->len);
 }
 
 
