@@ -16,6 +16,7 @@
 // extension entry point
 void Init_rinotify() {
 	rb_cRInotify = rb_define_class("RInotify", rb_cObject);	
+	rb_cRInotifyEvent = rb_define_class("RInotifyEvent", rb_cObject);
 	
 	// initialize all of the events
 	rinotify_declare_events(rb_cRInotify);		

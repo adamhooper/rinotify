@@ -14,7 +14,12 @@ void Init_rinotify_event() {
 
 
 VALUE rb_rinotify_event_new(struct inotify_event *event) {
-	return Data_Wrap_Struct(rb_cRInotifyEvent, NULL, free, event);	
+	VALUE rinotify_event;
+
+	rinotify_event = Data_Wrap_Struct(rb_cRInotifyEvent, NULL, free, event);
+	rb_obj_call_init(rinotify_event, 0, NULL);
+
+	return rinotify_event;
 }
 
 
