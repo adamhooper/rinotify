@@ -5,7 +5,6 @@
  * ***************************************************/
 
 #include "ruby.h"
-#include "rubyio.h"
 #include "rinotify.h"
 #include "rinotify_event.h"
 
@@ -163,8 +162,8 @@ static VALUE rb_rinotify_read_each_event(VALUE self) {
 
 		// copy the tmp_event into our malloc'd event so that it doesn't
 		// go out of scope after we yield the object
-        event = malloc(EVENT_SIZE);
-		memmove(event, tmp_event, EVENT_SIZE); 
+        event = malloc(EVENT_SIZE + tmp_event->len);
+		memmove(event, tmp_event, EVENT_SIZE + tmp_event->len); 
 
 		// construct the RInotifyEvent object
 		rb_yield(rb_rinotify_event_new(event));

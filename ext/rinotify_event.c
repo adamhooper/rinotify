@@ -1,5 +1,4 @@
 #include "ruby.h"
-#include "rubyio.h"
 #include "rinotify_event.h"
 
 #include <sys/inotify.h>
@@ -33,10 +32,10 @@ VALUE rb_rinotify_event_name(VALUE self) {
 		name = rb_str_new2(event->name);	
 	} else {
 	// if watching a single file we need to retrieve it from the initial watch
-		name = rb_str_new2("something");
+		name = rb_str_new2("no name");
 	}
 
-	return INT2NUM(event->len);
+	return name;
 }
 
 
