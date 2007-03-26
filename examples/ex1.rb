@@ -1,15 +1,16 @@
 require "rinotify"
 
 rino = RInotify.new
-t = rino.add_watch("/home/rob/tmp", RInotify::CREATE)
-puts rino.watch_descriptors[1]
+t = rino.add_watch("/home/rob/tmp/test", RInotify::MODIFY)
+puts rino.watch_descriptors
 
 while(1)
 	has_events = rino.wait_for_events(5)
 	if has_events
 		puts "has events"
 		rino.read_each_event {|revent|
-			puts "event_name: " + revent.name
+			wd = revent.watch_descriptor
+			puts wd
 		}
 
 		has_events = false

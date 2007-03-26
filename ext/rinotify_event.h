@@ -37,4 +37,14 @@ VALUE rb_rinotify_event_new(struct inotify_event*);
 VALUE rb_rinotify_event_name(VALUE);
 
 
+/*
+ *
+ * call-seq:
+ * 		RInotifyEvent.watch_descriptor => event->wd
+ *
+ * Returns the watch descriptor that the event belongs to.
+ *
+ */
+VALUE rb_rinotify_event_watch_descriptor(VALUE);
+
 #endif

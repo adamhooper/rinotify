@@ -22,11 +22,19 @@ VALUE rb_rinotify_event_name(VALUE self) {
 	if (event->len) {
 		name = rb_str_new2(event->name);	
 	} else {
-	// if watching a single file we need to retrieve it from the initial watch
-		name = rb_str_new2("no name yet");
+	// watching a single file doesn't waste space with a filename so return nil
+		name = Qnil;
 	}
 
 	return name;
+}
+
+
+VALUE rb_rinotify_event_watch_descriptor(VALUE self) {
+	struct inotify_event *event;	
+	Data_Get_Struct(self, struct inotify_event, event);
+
+	return INT2NUM(event->wd);
 }
 
 

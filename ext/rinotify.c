@@ -50,9 +50,9 @@ void Init_rinotify() {
 	
 	// RInotifyEvent.name
 	rb_define_method(rb_cRInotifyEvent, "name", rb_rinotify_event_name, 0);
-
-	// RInotifyEvent.event_sent
-	//rb_define_method(rb_cRInotifyEvent, "event_sent", rb_rinotify_event_sent, 0);
+	
+	// RInotifyEvent.name
+	rb_define_method(rb_cRInotifyEvent, "watch_descriptor", rb_rinotify_event_watch_descriptor, 0);
 }
 
 
