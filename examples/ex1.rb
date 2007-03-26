@@ -1,7 +1,8 @@
 require "rinotify"
 
 rino = RInotify.new
-rino.add_watch("/home/rob/tmp", RInotify::CREATE)
+t = rino.add_watch("/home/rob/tmp", RInotify::CREATE)
+puts rino.watch_descriptors[1]
 
 while(1)
 	has_events = rino.wait_for_events(5)

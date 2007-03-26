@@ -3,15 +3,6 @@
 
 #include <sys/inotify.h>
 
-// class entry point
-void Init_rinotifyevent() {
-	rb_cRInotifyEvent = rb_define_class("RInotifyEvent", rb_cObject);
-
-	// RInotifyEvent.name
-	rb_define_method(rb_cRInotifyEvent, "name", rb_rinotify_event_name, 0);
-}
-
-
 VALUE rb_rinotify_event_new(struct inotify_event *event) {
 	VALUE rinotify_event;
 
@@ -32,7 +23,7 @@ VALUE rb_rinotify_event_name(VALUE self) {
 		name = rb_str_new2(event->name);	
 	} else {
 	// if watching a single file we need to retrieve it from the initial watch
-		name = rb_str_new2("no name");
+		name = rb_str_new2("no name yet");
 	}
 
 	return name;

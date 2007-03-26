@@ -22,6 +22,9 @@ static VALUE rb_cRInotify;
 // declare the inotify events as constants
 static void rinotify_declare_events(VALUE);
 
+// declare any instance variables we will need
+static void rinotify_declare_instance_vars(VALUE);
+
 
 
 /* Ruby Prototypes */
@@ -91,5 +94,13 @@ static VALUE rb_rinotify_wait_for_events(VALUE, VALUE);
  *
  */
 static VALUE rb_rinotify_read_each_event(VALUE);
+
+
+/*
+ * call-seq:
+ *		RInotify.watch_descriptors => array
+ *
+ */
+static VALUE rb_rinotify_watch_descriptors(VALUE);
 
 #endif

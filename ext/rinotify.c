@@ -20,6 +20,7 @@ void Init_rinotify() {
 	// initialize all of the events
 	rinotify_declare_events(rb_cRInotify);		
 
+
 	// RInotify.new
 	rb_define_alloc_func(rb_cRInotify, rb_rinotify_new);
 	
@@ -40,6 +41,9 @@ void Init_rinotify() {
 
 	// RInotify.read_each_event
 	rb_define_method(rb_cRInotify, "read_each_event", rb_rinotify_read_each_event, 0);
+	
+	// RInotify.watch_descriptors
+	rb_define_method(rb_cRInotify, "watch_descriptors", rb_rinotify_watch_descriptors, 0);
 
 
 	/* The following methods are implemented in rinotify_event.c */
@@ -53,6 +57,8 @@ void Init_rinotify() {
 
 
 static VALUE rb_rinotify_new(VALUE klass) {
+	VALUE initialized_class;
+	
 	// initialize inotify
 	int *inotify = NULL;
 	inotify = malloc(sizeof(int));
@@ -60,11 +66,16 @@ static VALUE rb_rinotify_new(VALUE klass) {
 
 	if (*inotify < 0)
 		rb_sys_fail("inotify_init");	
-
+	
 	// make sure free is called because we malloc'd above
 	// TODO instead of sending to free create a function to close inotfy
 	// if it is still open, so we can prevent memory leaks
-	return Data_Wrap_Struct(klass, NULL, free, inotify);
+	initialized_class = Data_Wrap_Struct(klass, NULL, free, inotify);
+	
+	// initialize all of the instance variables for this class
+	rinotify_declare_instance_vars(initialized_class);
+
+	return initialized_class;
 }
 
 
@@ -88,15 +99,21 @@ static VALUE rb_rinotify_close(VALUE self) {
 
 static VALUE rb_rinotify_add_watch(VALUE self, VALUE filename, VALUE event_masks) {
 	int *inotify = NULL, watch_desc;
+	VALUE watch_desc_id, watch_descriptor_list;
 	Data_Get_Struct(self, int, inotify);
 
-	// TODO: does inotify make sure the file exists?
 	// add the watch
 	watch_desc = inotify_add_watch(*inotify, RSTRING(filename)->ptr, NUM2INT(event_masks));	
 	if (watch_desc < 0)
 		rb_sys_fail("add_watch");
 	
-	return INT2NUM(watch_desc);
+	watch_desc_id = INT2NUM(watch_desc);
+
+	// add the watch descriptor to our list
+	watch_descriptor_list = rb_iv_get(self, "@watch_descriptors");
+	rb_hash_aset(watch_descriptor_list, watch_desc_id, filename);
+
+	return watch_desc_id;
 }
 
 
@@ -175,6 +192,11 @@ static VALUE rb_rinotify_read_each_event(VALUE self) {
 }
 
 
+static VALUE rb_rinotify_watch_descriptors(VALUE self) {
+	return rb_iv_get(self, "@watch_descriptors");
+}
+
+
 static void rinotify_declare_events(VALUE klass) {
 	// watch events
 	rb_const_set(klass, rb_intern("IN_ACCESS"), INT2NUM(IN_ACCESS));
@@ -235,4 +257,12 @@ static void rinotify_declare_events(VALUE klass) {
 	rb_const_set(klass, rb_intern("ONESHOT"), INT2NUM(IN_ONESHOT));	
 
 	// TODO IN_ALL_EVENTS
+}
+
+
+static void rinotify_declare_instance_vars(VALUE klass) {
+	// Array: holds a listing of all watch descriptors and the filename or directory name
+	// that they happen to be watching
+	VALUE watch_descriptors = rb_hash_new();
+	rb_iv_set(klass, "@watch_descriptors", watch_descriptors);		
 }
