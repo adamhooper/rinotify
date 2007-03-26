@@ -47,4 +47,15 @@ VALUE rb_rinotify_event_name(VALUE);
  */
 VALUE rb_rinotify_event_watch_descriptor(VALUE);
 
+
+/*
+ *
+ * call-seq:
+ * 		RInotifyEvent.check_mask => boolean
+ *
+ * Returns true or false if the current event contains the mask(s)
+ *
+ */
+VALUE rb_rinotify_event_check_mask(VALUE, VALUE);
+
 #endif

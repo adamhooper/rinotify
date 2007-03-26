@@ -1,7 +1,7 @@
 require "rinotify"
 
 rino = RInotify.new
-t = rino.add_watch("/home/rob/tmp/test", RInotify::MODIFY)
+t = rino.add_watch("/home/rob/tmp/test", RInotify::MODIFY | RInotify::DELETE)
 puts rino.watch_descriptors
 
 while(1)
@@ -9,8 +9,11 @@ while(1)
 	if has_events
 		puts "has events"
 		rino.read_each_event {|revent|
-			wd = revent.watch_descriptor
-			puts wd
+			if revent.check_mask(RInotify::MODIFY)
+				puts "modified"
+			elsif revent.check_mask(RInotify::DELETE)
+				puts "deleted"
+			end
 		}
 
 		has_events = false

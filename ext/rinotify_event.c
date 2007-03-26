@@ -38,3 +38,16 @@ VALUE rb_rinotify_event_watch_descriptor(VALUE self) {
 }
 
 
+VALUE rb_rinotify_event_check_mask(VALUE self, VALUE masks) {
+	VALUE return_val;
+	struct inotify_event *event;	
+	Data_Get_Struct(self, struct inotify_event, event);
+
+	if (event->mask & NUM2INT(masks))
+		return_val = Qtrue;
+	else 
+		return_val = Qfalse;
+
+	return return_val;
+}
+

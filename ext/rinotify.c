@@ -51,8 +51,11 @@ void Init_rinotify() {
 	// RInotifyEvent.name
 	rb_define_method(rb_cRInotifyEvent, "name", rb_rinotify_event_name, 0);
 	
-	// RInotifyEvent.name
+	// RInotifyEvent.watch_descriptor
 	rb_define_method(rb_cRInotifyEvent, "watch_descriptor", rb_rinotify_event_watch_descriptor, 0);
+	
+	// RInotifyEvent.check_mask
+	rb_define_method(rb_cRInotifyEvent, "check_mask", rb_rinotify_event_check_mask, 1);
 }
 
 
