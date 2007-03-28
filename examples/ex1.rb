@@ -1,7 +1,7 @@
 require "rinotify"
 
 rino = RInotify.new
-t = rino.add_watch("/home/rob/tmp/test", RInotify::MODIFY | RInotify::DELETE)
+t = rino.add_watch("/home/rob/tmp", RInotify::MODIFY | RInotify::DELETE | RInotify::CREATE)
 puts rino.watch_descriptors
 
 while(1)
@@ -13,6 +13,10 @@ while(1)
 				puts "modified"
 			elsif revent.check_mask(RInotify::DELETE)
 				puts "deleted"
+			end
+
+			if revent.check_mask(RInotify::ISDIR)
+				puts "is a dir"
 			end
 		}
 

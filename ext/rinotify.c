@@ -259,7 +259,8 @@ static void rinotify_declare_events(VALUE klass) {
 	rb_const_set(klass, rb_intern("IN_ONESHOT"), INT2NUM(IN_ONESHOT));	
 	rb_const_set(klass, rb_intern("ONESHOT"), INT2NUM(IN_ONESHOT));	
 
-	// TODO IN_ALL_EVENTS
+	rb_const_set(klass, rb_intern("IN_ALL_EVENTS"), INT2NUM(IN_ALL_EVENTS));
+	rb_const_set(klass, rb_intern("ALL_EVENTS"), INT2NUM(IN_ALL_EVENTS));
 }
 
 
