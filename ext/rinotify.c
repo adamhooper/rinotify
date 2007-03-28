@@ -10,6 +10,7 @@
 
 #include <sys/inotify.h>
 #include <sys/time.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 
 // extension entry point
@@ -44,6 +45,9 @@ void Init_rinotify() {
 	
 	// RInotify.watch_descriptors
 	rb_define_method(rb_cRInotify, "watch_descriptors", rb_rinotify_watch_descriptors, 0);
+
+	// RInotify.event_queue_size
+	rb_define_method(rb_cRInotify, "event_queue_size", rb_rinotify_queue_size, 0);
 
 
 	/* The following methods are implemented in rinotify_event.c */
@@ -197,6 +201,21 @@ static VALUE rb_rinotify_read_each_event(VALUE self) {
 
 static VALUE rb_rinotify_watch_descriptors(VALUE self) {
 	return rb_iv_get(self, "@watch_descriptors");
+}
+
+
+static VALUE rb_rinotify_queue_size(VALUE self) {
+	int *inotify = NULL, return_val;
+	unsigned int queue_size;
+
+	Data_Get_Struct(self, int, inotify);
+
+	return_val = ioctl(*inotify, FIONREAD, &queue_size);
+
+	if (return_val < 0)
+		rb_sys_fail("event_queue_size");
+
+	return UINT2NUM(queue_size);
 }
 
 

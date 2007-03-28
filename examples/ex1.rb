@@ -7,12 +7,15 @@ puts rino.watch_descriptors
 while(1)
 	has_events = rino.wait_for_events(5)
 	if has_events
-		puts "has events"
+		puts "event queue size: " + rino.event_queue_size.to_s
+
 		rino.read_each_event {|revent|
 			if revent.check_mask(RInotify::MODIFY)
 				puts "modified"
 			elsif revent.check_mask(RInotify::DELETE)
 				puts "deleted"
+			elsif revent.check_mask(RInotify::CREATE)
+				puts "created"
 			end
 
 			if revent.check_mask(RInotify::ISDIR)

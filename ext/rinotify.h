@@ -103,4 +103,12 @@ static VALUE rb_rinotify_read_each_event(VALUE);
  */
 static VALUE rb_rinotify_watch_descriptors(VALUE);
 
+
+/*
+ * call-seq:
+ *		RInotify.event_queue_size => int
+ *
+ */
+static VALUE rb_rinotify_queue_size(VALUE);
+
 #endif
