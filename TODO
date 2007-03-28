@@ -1,0 +1,13 @@
+For Alpha:
+- Add new methods to Unit Tests.
+- Add method to get event queue size.
+
+For Beta:
+- Rewrite function usage examples.
+- Generate Documentation.
+- Write examples.
+- Finish Website.
+
+For Stable:
+- Write tutorials.
+- Fix any outstanding bugs.
