@@ -40,8 +40,8 @@ void Init_rinotify() {
 	// RInotify.wait_for_events
 	rb_define_method(rb_cRInotify, "wait_for_events", rb_rinotify_wait_for_events, 1);
 
-	// RInotify.read_each_event
-	rb_define_method(rb_cRInotify, "read_each_event", rb_rinotify_read_each_event, 0);
+	// RInotify.each_event
+	rb_define_method(rb_cRInotify, "each_event", rb_rinotify_each_event, 0);
 	
 	// RInotify.watch_descriptors
 	rb_define_method(rb_cRInotify, "watch_descriptors", rb_rinotify_watch_descriptors, 0);
@@ -170,7 +170,7 @@ static VALUE rb_rinotify_wait_for_events(VALUE self, VALUE time_value) {
 }
 
 
-static VALUE rb_rinotify_read_each_event(VALUE self) {
+static VALUE rb_rinotify_each_event(VALUE self) {
 	struct inotify_event *event = NULL, *tmp_event = NULL;
 	int *inotify = NULL, i = 0, len;
 	char buffer[BUFFER_SIZE];

@@ -20,7 +20,7 @@ VALUE rb_cRInotifyEvent;
  * call-seq:
  * 		RInotifyEvent.new => RInotifyEvent
  *
- * 	Returns a new RInotifyEvent object.  This method should only be called by RInotify.read_each_event
+ * 	Returns a new RInotifyEvent object.  This method should only be called by RInotify.each_event
  *
  */
 VALUE rb_rinotify_event_new(struct inotify_event*);

@@ -11,14 +11,14 @@ class TestCase_Directory < Test::Unit::TestCase
 	end
 
 	def test_watch_single_event
-		watch_desc = @inotify.add_watch("./testdir", RInotify::IN_OPEN)
+		watch_desc = @inotify.add_watch("./testdir", RInotify::OPEN)
 		@inotify.rm_watch(watch_desc)
 
 		assert(watch_desc > 0)
 	end
 
 	def test_watch_multi_event
-		watch_desc = @inotify.add_watch("./testdir", RInotify::IN_OPEN | RInotify::IN_MODIFY | RInotify::IN_ACCESS)
+		watch_desc = @inotify.add_watch("./testdir", RInotify::OPEN | RInotify::MODIFY | RInotify::ACCESS)
 		@inotify.rm_watch(watch_desc)
 
 		assert(watch_desc > 0)

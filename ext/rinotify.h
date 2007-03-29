@@ -90,10 +90,10 @@ static VALUE rb_rinotify_wait_for_events(VALUE, VALUE);
 
 /*
  * call-seq:
- *		RInotify.read_each_event => ... 
+ *		RInotify.each_event => ... 
  *
  */
-static VALUE rb_rinotify_read_each_event(VALUE);
+static VALUE rb_rinotify_each_event(VALUE);
 
 
 /*
