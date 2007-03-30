@@ -75,8 +75,6 @@ static VALUE rb_rinotify_new(VALUE klass) {
 		rb_sys_fail("inotify_init");	
 	
 	// make sure free is called because we malloc'd above
-	// TODO instead of sending to free create a function to close inotfy
-	// if it is still open, so we can prevent memory leaks
 	initialized_class = Data_Wrap_Struct(klass, NULL, free, inotify);
 	
 	// initialize all of the instance variables for this class
@@ -177,7 +175,6 @@ static VALUE rb_rinotify_each_event(VALUE self) {
 
 	Data_Get_Struct(self, int, inotify);
 
-	// TODO: fread?
 	len = read(*inotify, buffer, BUFFER_SIZE);	
 
 	// read each event
@@ -210,6 +207,7 @@ static VALUE rb_rinotify_queue_size(VALUE self) {
 
 	Data_Get_Struct(self, int, inotify);
 
+	// get the queue size
 	return_val = ioctl(*inotify, FIONREAD, &queue_size);
 
 	if (return_val < 0)

@@ -9,11 +9,9 @@ while(1)
 	if has_events
 		puts "event queue size: " + rino.event_queue_size.to_s
 
-		rino.read_each_event {|revent|
-			if revent.check_mask(RInotify::MODIFY)
-				puts "modified"
-			elsif revent.check_mask(RInotify::DELETE)
-				puts "deleted"
+		rino.each_event {|revent|
+			if revent.check_mask(RInotify::MODIFY | RInotify::DELETE)
+				puts "modified or deleted"
 			elsif revent.check_mask(RInotify::CREATE)
 				puts "created"
 			end

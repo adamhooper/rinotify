@@ -6,6 +6,7 @@
 VALUE rb_rinotify_event_new(struct inotify_event *event) {
 	VALUE rinotify_event;
 
+	// initialize the object
 	rinotify_event = Data_Wrap_Struct(rb_cRInotifyEvent, NULL, free, event);
 	rb_obj_call_init(rinotify_event, 0, NULL);
 
@@ -43,6 +44,7 @@ VALUE rb_rinotify_event_check_mask(VALUE self, VALUE masks) {
 	struct inotify_event *event;	
 	Data_Get_Struct(self, struct inotify_event, event);
 
+	// check if the mask is part of the event
 	if (event->mask & NUM2INT(masks))
 		return_val = Qtrue;
 	else 
