@@ -4,9 +4,10 @@
 #
 #
 # This example shows the very basics of how to use RInotify with regular files.
-# It is recomended that this example be used for to see the uses of different methods
-# as you wait_for_events really does wait for events until one is received or it 
-# times out.  Long story short, use threads, as is shown in another example.
+# It is recomended that this example be used to see the uses of different methods
+# and not in actual production code. The method wait_for_events really does wait for 
+# events until one is received or it times out, meaning it blocks.  Long story short, 
+# use threads as is shown in the example: watch_file_threaded.rb.
 # 
 #######################################################
 
@@ -25,10 +26,6 @@ end
 # create the object and add a watch on the file
 rinotify = RInotify.new
 rinotify.add_watch(ARGV[0], RInotify::MODIFY | RInotify::DELETE_SELF)
-
-
-# wait for events
-has_events = false
 
 # timeout after five seconds
 has_events = rinotify.wait_for_events(5)	
