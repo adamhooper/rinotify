@@ -11,7 +11,13 @@
 # 
 #######################################################
 
-require 'rinotify'
+# require the file and rubygems if necessary
+begin
+	require 'rinotify'
+rescue LoadError
+	require 'rubygems'
+	require 'rinotify'
+end
 
 # make sure we have a file name
 if !ARGV[0]
