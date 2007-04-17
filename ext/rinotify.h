@@ -10,7 +10,7 @@
 #include "ruby.h"
 #include <sys/inotify.h>
 
-#define CURRENT_VERSION "0.5.0"
+#define CURRENT_VERSION "0.9"
 #define EVENT_SIZE sizeof(struct inotify_event)
 #define BUFFER_SIZE 16384
 
