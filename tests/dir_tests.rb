@@ -1,5 +1,10 @@
 require 'test/unit'
-require '../rinotify'
+begin
+	require 'rinotify'
+rescue LoadError
+	require 'rubygems'
+	require 'rinotify'
+end
 
 class TestCase_Directory < Test::Unit::TestCase
 	def setup
