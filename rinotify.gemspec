@@ -1,25 +1,37 @@
-require 'rubygems'
-spec = Gem::Specification.new do |s|
-	s.name = "RInotify"
-	s.version = "0.9"
-	s.author = "Rob Merrell"
-	s.email = "rob@migrob.com"
-	s.homepage = "http://rinotify.migrob.com"
-	s.platform = Gem::Platform::LINUX_586
-	s.summary = "A Ruby wrapper for Linux's inotify"
+# -*- encoding: utf-8 -*-
 
-	candidates = Dir.glob("{ext, examples, tests}/**/*")
-	s.files	= candidates.delete_if do |item|
-				item.include?(".svn")
-			  end
+Gem::Specification.new do |s|
+  s.name = %q{rinotify}
+  s.version = "0.9.0"
 
-	s.require_path = "."
-	s.has_rdoc = false
-	s.autorequire = "RInotify"
-	s.extensions = ["extconf.rb"]
-end
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["Rob Merrell"]
+  s.date = %q{2009-07-06}
+  s.email = %q{rob@migrob.com}
+  s.extensions = ["extconf.rb"]
+  s.files = [
+    "ext/rinotify.c",
+     "ext/rinotify.h",
+     "ext/rinotify_event.c",
+     "ext/rinotify_event.h"
+  ]
+  s.homepage = %q{http://rinotify.migrob.com}
+  s.rdoc_options = ["--charset=UTF-8"]
+  s.require_paths = ["."]
+  s.rubygems_version = %q{1.3.1}
+  s.summary = %q{A Ruby wrapper for Linux's inotify}
+  s.test_files = [
+    "examples/watch_file.rb",
+     "examples/watch_file_threaded.rb"
+  ]
 
-if $0 == __FILE__
-	Gem::manage_gems
-	Gem::Builder.new(spec).build
+  if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
+    s.specification_version = 2
+
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    else
+    end
+  else
+  end
 end

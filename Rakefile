@@ -1,7 +1,7 @@
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name = "RInotify"
+    gemspec.name = "rinotify"
     gemspec.summary = "A Ruby wrapper for Linux's inotify"
     gemspec.email = "josh@technicalpickles.com"
     gemspec.homepage = "http://rinotify.migrob.com"
@@ -10,7 +10,6 @@ begin
     gemspec.files = Dir.glob("{ext, examples, tests}/**/*")
     gemspec.require_path = "."
     gemspec.has_rdoc = false
-    gemspec.autorequire = "RNotify"
     gemspec.extensions = ["extconf.rb"]
   end
 rescue LoadError
