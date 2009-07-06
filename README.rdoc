@@ -1,0 +1,25 @@
+Example usage:
+
+  rinotify = RInotify.new
+  rinotify.add_watch(ARGV[0], RInotify::MODIFY | RInotify::DELETE_SELF)
+  
+  has_events = rinotify.wait_for_events(5)  
+  if has_events
+    # iterate through events
+    rinotify.each_event {|revent|
+      
+      # check if the event we received was MODIFY or DELETE_SELF
+      if revent.check_mask(RInotify::MODIFY)
+        puts "file was modified"
+      elsif revent.check_mask(RInotify::DELETE_SELF)
+        puts "file was deleted"
+      end
+    }
+  
+  else
+    # no events were received in the number of seconds specified in wait_for_events above
+    puts "Timed out"
+  end
+  
+  # close and clean up
+  rinotify.close
